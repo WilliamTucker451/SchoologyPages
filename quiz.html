@@ -1,5 +1,44 @@
 <!DOCTYPE html>
 <html>
+<head>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+
+  #quiz, #result {
+    margin: 0 auto;
+    display: block;
+    max-width: 400px;
+  }
+
+  h1, h2, h3 {
+    text-align: center;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    cursor: pointer;
+  }
+
+  li.selected {
+    background-color: #ccc;
+  }
+
+  .good {
+    color: green;
+  }
+
+  .bad {
+    color: red;
+  }
+</style>
+</head>
 <body>
 
 <div id="quiz">
@@ -97,6 +136,7 @@
 
     scoreElement.textContent = score;
     gradeElement.textContent = calculateGrade(score);
+    gradeElement.classList.add(score >= 4 ? "good" : "bad");
     correctAnswersElement.innerHTML = "";
 
     for (var i = 0; i < quizData.length; i++) {
@@ -128,16 +168,6 @@
 
   loadQuestion();
 </script>
-
-<style>
-  li {
-    cursor: pointer;
-  }
-
-  li.selected {
-    background-color: #ccc;
-  }
-</style>
 
 </body>
 </html>
