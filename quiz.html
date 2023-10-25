@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div id="quiz">
+  <h1>About Me Quiz</h1>
+  <p id="question"></p>
+  <ul id="choices"></ul>
+  <button onclick="checkAnswer()">Submit</button>
+</div>
+
+<div id="result" style="display: none;">
+  <h2>Score: <span id="score"></span></h2>
+  <h3>Grade: <span id="grade"></span></h3>
+  <h3>Correct Answers:</h3>
+  <ul id="correct-answers"></ul>
+</div>
+
+<script>
+  // Define the quiz questions and answers
+  var quizData = [
+    {
+      question: "What is my favorite color?",
+      choices: ["Red", "Blue", "Green", "Yellow"],
+      correctAnswer: "Blue"
+    },
+    {
+      question: "How old am I?",
+      choices: ["10", "12", "13", "11"],
+      correctAnswer: "13"
+    },
+    {
+      question: "What do I like to do in my free time?",
+      choices: ["Programming and Animation", "Programming", "Animation", "Sleeping"],
+      correctAnswer: "Programming and Animation"
+    },
+    {
+      question: "How many computers do I have?",
+      choices: ["1", "2", "5", "3"],
+      correctAnswer: "3"
+    },
+    {
+      question: "What grade am I in?",
+      choices: ["7th Grade", "6th Grade", "8th Grade"],
+      correctAnswer: "7th Grade"
+    },
+    {
+      question: "What is my YouTube channel called?",
+      choices: ["William Tucker", "Mr. TeeVee"],
+      correctAnswer: "Mr. TeeVee"
+    }
+  ];
+
+  var currentQuestion = 0;
+  var score = 0;
+
+  function loadQuestion() {
+    var questionElement = document.getElementById("question");
+    var choicesElement = document.getElementById("choices");
+    var choices = quizData[currentQuestion].choices;
+
+    questionElement.textContent = quizData[currentQuestion].question;
+    choicesElement.innerHTML = "";
+
+    for (var i = 0; i < choices.length; i++) {
+      var li = document.createElement("li");
+      var choice = choices[i];
+      li.textContent = choice;
+      li.onclick = selectAnswer;
+      choicesElement.appendChild(li);
+    }
+  }
+
+  function selectAnswer(event) {
+    var selectedChoice = event.target.textContent;
+    var correctAnswer = quizData[currentQuestion].correctAnswer;
+
+    if (selectedChoice === correctAnswer) {
+      score++;
+    }
+
+    currentQuestion++;
+
+    if (currentQuestion < quizData.length) {
+      loadQuestion();
+    } else {
+      showResult();
+    }
+  }
+
+  function showResult() {
+    var quizElement = document.getElementById("quiz");
+    var resultElement = document.getElementById("result");
+    var scoreElement = document.getElementById("score");
+    var gradeElement = document.getElementById("grade");
+    var correctAnswersElement = document.getElementById("correct-answers");
+
+    scoreElement.textContent = score;
+    gradeElement.textContent = calculateGrade(score);
+    correctAnswersElement.innerHTML = "";
+
+    for (var i = 0; i < quizData.length; i++) {
+      var li = document.createElement("li");
+      var question = quizData[i].question;
+      var correctAnswer = quizData[i].correctAnswer;
+      li.textContent = question + " - " + correctAnswer;
+      correctAnswersElement.appendChild(li);
+    }
+
+    quizElement.style.display = "none";
+    resultElement.style.display = "block";
+  }
+
+  function calculateGrade(score) {
+    var percentage = (score / quizData.length) * 100;
+    return Math.round(percentage);
+  }
+
+  function checkAnswer() {
+    var choicesElement = document.getElementById("choices");
+    var selectedChoice = choicesElement.querySelector(".selected");
+
+    if (selectedChoice) {
+      selectedChoice.classList.remove("selected");
+      selectAnswer(selectedChoice);
+    }
+  }
+
+  loadQuestion();
+</script>
+
+<style>
+  li {
+    cursor: pointer;
+  }
+
+  li.selected {
+    background-color: #ccc;
+  }
+</style>
+
+</body>
+</html>
